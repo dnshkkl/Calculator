@@ -291,9 +291,37 @@ public void actionPerformed(ActionEvent e) {
 		
 		float oldValueF=Float.parseFloat(oldValue);
 		float newValueF=Float.parseFloat(newValue);
+		float result=0;
 		
-		float result=oldValueF+newValueF;
-		displayLabel.setText(result+"");
+		
+		if(isOperatorClicked) {
+			if(addButton.getText().equals("+")) {
+				result=newValueF+oldValueF;
+			}
+			else if(multiButton.getText().equals("x")) {
+				result=newValueF*oldValueF;
+			}
+			else if(subButton.getText().equals("-")) {
+				result=oldValueF-newValueF;
+			}
+			else if(divButton.getText().equals("/")) {
+	            if (newValueF != 0) {
+	                result = oldValueF / newValueF;
+	            } else {
+
+	                displayLabel.setText("Error");
+	                return;
+	            }
+	        }
+		}
+		
+			 displayLabel.setText(result+"");
+		
+			 isOperatorClicked = false;
+		
+		
+		
+		
 		
 	}
 	
@@ -302,10 +330,16 @@ public void actionPerformed(ActionEvent e) {
 		oldValue=displayLabel.getText();
 	}
 	else if(e.getSource()==multiButton) {
+		isOperatorClicked=true;
+		oldValue=displayLabel.getText();
 	}
 	else if(e.getSource()==subButton) {
+		isOperatorClicked=true;
+		oldValue=displayLabel.getText();
 	}
 	else if(e.getSource()==divButton) {
+		isOperatorClicked=true;
+		oldValue=displayLabel.getText();
 	}
 	
 }

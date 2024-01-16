@@ -30,7 +30,7 @@ public class Calculator implements ActionListener {
 	JButton clearButton;
 	
 	boolean isOperatorClicked=false;
-	String oldValue;
+	String oldValue="0";
 	
 	public Calculator(){
 		jf=new JFrame("Calculator");
@@ -141,6 +141,7 @@ public class Calculator implements ActionListener {
 		divButton.setBounds(330, 130, 80, 80);
 		divButton.setFont(new Font("Arial",Font.ITALIC, 35));
 		divButton.setBackground(Color.orange);
+		divButton.addActionListener(this);
 		jf.add(divButton);
 		
 		multiButton=new JButton("x");
@@ -285,45 +286,42 @@ public void actionPerformed(ActionEvent e) {
 		displayLabel.setText("");
 	}
 	
-	else if(e.getSource()==equalsButton) {
-		
-		String newValue=displayLabel.getText();
-		
-		float oldValueF=Float.parseFloat(oldValue);
-		float newValueF=Float.parseFloat(newValue);
-		float result=0;
-		
-		
-		if(isOperatorClicked) {
-			if(addButton.getText().equals("+")) {
-				result=newValueF+oldValueF;
-			}
-			else if(multiButton.getText().equals("x")) {
-				result=newValueF*oldValueF;
-			}
-			else if(subButton.getText().equals("-")) {
-				result=oldValueF-newValueF;
-			}
-			else if(divButton.getText().equals("/")) {
-	            if (newValueF != 0) {
-	                result = oldValueF / newValueF;
-	            } else {
+	else if (e.getSource() == equalsButton) {
+	    String newValue = displayLabel.getText();
 
-	                displayLabel.setText("Error");
-	                return;
-	            }
+	    float oldValueF = Float.parseFloat(oldValue);
+	    float newValueF = Float.parseFloat(newValue);
+	    float result = 0;
+	    if (isOperatorClicked) {
+	        String operator = displayLabel.getText().replaceAll("[0-9.]", ""); // Extract the operator
+
+	        switch (operator) {
+	            case "+":
+	                result = oldValueF + newValueF;
+	                break;
+	            case "x":
+	                result = oldValueF * newValueF;
+	                break;
+	            case "-":
+	                result = oldValueF - newValueF;
+	                break;
+	            case "/":
+	                if (newValueF != 0) {
+	                    result = oldValueF / newValueF;
+	                } else {
+	                    displayLabel.setText("Error");
+	                    return;
+	                }
+	                break;
 	        }
-		}
-		
-			 displayLabel.setText(result+"");
-		
-			 isOperatorClicked = false;
-		
-		
-		
-		
-		
+
+	        oldValue = result + "";
+	        newValue = "";
+	        displayLabel.setText(result + "");
+	        isOperatorClicked = false;
+	    }
 	}
+
 	
 	else if(e.getSource()==addButton) {
 		isOperatorClicked=true;
